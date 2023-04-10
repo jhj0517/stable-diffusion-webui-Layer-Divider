@@ -22,7 +22,11 @@ make sure to add the `git` to your system PATH.
 
 or alternatively, download and unzip the repository in your extensions folder!
 
-# Explanation of Parameters
+# How to use
+Adjust the parameters and click "Generate". The output will be displayed below, and a PSD file will be saved in the `extensions\stable-diffusion-webui-layer-divider\layer_divider_outputs\psd` folder.
+
+
+## Explanation of Parameters
 
 | Parameter                      | Description                                                                                                                                                                                                                                                                              |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
