@@ -3,9 +3,9 @@ This is an implementaion of the [SAM](https://github.com/facebookresearch/segmen
 
 Divide layers in the SD WebUI and save them as PSD files.
 
-![screenshot1](https://raw.githubusercontent.com/jhj0517/stable-diffusion-webui-Layer-Divider/master/screenshot.png?token=GHSAT0AAAAAAB7Z7LNTSXZSGKK3D3UIKFKQZBUPDEQ)
+![screenshot1](https://raw.githubusercontent.com/jhj0517/stable-diffusion-webui-Layer-Divider/master/screenshot.png)
 
-![screenshot2](https://raw.githubusercontent.com/jhj0517/stable-diffusion-webui-Layer-Divider/master/screenshot2.png?token=GHSAT0AAAAAAB7Z7LNS3RD6NA6YPQXJ5ASWZBUPFWA)
+![screenshot2](https://raw.githubusercontent.com/jhj0517/stable-diffusion-webui-Layer-Divider/master/screenshot2.png)
 
 If you want a dedicated WebUI specifically for this, rather than as an extension, please visit this [repository](https://github.com/jhj0517/Layer-Divider-WebUI)
 
