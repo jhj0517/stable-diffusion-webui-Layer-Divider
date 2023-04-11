@@ -9,14 +9,6 @@ Divide layers in the SD WebUI and save them as PSD files.
 
 If you want a dedicated WebUI specifically for this, rather than as an extension, please visit this [repository](https://github.com/jhj0517/Layer-Divider-WebUI)
 
-# Prerequisite
-you need to have `git` to install `segment-anything`.
-
-Please follow the links below to install the necessary software:
-- git : [https://git-scm.com/downloads](https://git-scm.com/downloads)
-
-make sure to add the `git` to your system PATH.
-
 # Installation
 `git clone https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider.git` to your stable-diffusion-webui extensions folder.
 
