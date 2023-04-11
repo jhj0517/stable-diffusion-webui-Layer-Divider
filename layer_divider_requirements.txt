@@ -1,0 +1,4 @@
+segment-anything
+opencv-python
+pycocotools
+pytoshop==1.2.0
