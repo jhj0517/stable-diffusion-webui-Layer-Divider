@@ -22,6 +22,11 @@ make sure to add the `git` to your system PATH.
 
 or alternatively, download and unzip the repository in your extensions folder!
 
+### Important Note!
+- Currently, you may encounter a permission error when launching the SD WebUI for the first time with this extension installed. To resolve this, simply close and restart the stable-diffusion WebUI. The extension will then appear and work as expected.
+    - Related issue : [issue #1](https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider/issues/1)
+
+
 # How to use
 Adjust the parameters and click "Generate". The output will be displayed below, and a PSD file will be saved in the `extensions\stable-diffusion-webui-layer-divider\layer_divider_outputs\psd` folder.
 
