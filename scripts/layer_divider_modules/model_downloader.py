@@ -6,7 +6,7 @@ from modules import modelloader
 from modules.sd_models import model_hash
 from modules import shared
 
-sam_model_path = os.path.join(models_path, "SAM")
+sam_model_path = os.path.join(models_path, "sam")
 
 AVAILABLE_MODELS = {
     "ViT-H SAM model": ["sam_vit_h_4b8939.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"],
