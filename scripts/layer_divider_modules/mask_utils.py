@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import os
 from pycocotools import mask as coco_mask
 from pytoshop import layers
 import pytoshop
@@ -88,7 +89,8 @@ def save_psd(input_image_data, layer_data, layer_names, blending_modes):
         psd_file = insert_psd_layer(psd_file, layer, layer_names[index], blending_modes[index])
 
     timestamp = datetime.now().strftime("%m%d%H%M%S")
-    with open(f"{base_dir}\layer_divider_outputs\psd\\result-{timestamp}.psd", 'wb') as output_file:
+    output_filename = os.path.join(base_dir, "layer_divider_outputs", "psd", f"result-{timestamp}.psd")
+    with open(output_filename, 'wb') as output_file:
         psd_file.write(output_file)
 
 
