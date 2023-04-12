@@ -11,7 +11,7 @@ from modules import safe
 class SamInference:
     def __init__(self):
         self.model = None
-        self.model_path = f"{sam_model_path}\sam_vit_h_4b8939.pth"
+        self.model_path = os.path.join(sam_model_path, "sam_vit_h_4b8939.pth")
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.mask_generator = None
 

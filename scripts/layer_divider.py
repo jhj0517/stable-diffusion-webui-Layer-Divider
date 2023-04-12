@@ -5,6 +5,7 @@ from scripts.layer_divider_modules.ui_utils import *
 from scripts.layer_divider_modules.html_constants import *
 
 import gradio as gr
+import os
 
 from modules import scripts, script_callbacks
 
@@ -36,7 +37,7 @@ def add_tab():
         params = [nb_points_per_side, sld_pred_iou_thresh, sld_stability_score_thresh, nb_crop_n_layers,
                   nb_crop_n_points_downscale_factor, nb_min_mask_region_area]
         btn_generate.click(fn=sam_inf.generate_mask_app, inputs=[img_input] + params, outputs=gallery_output)
-        btn_open_folder.click(fn=lambda: open_folder(f"{base_dir}\layer_divider_outputs\psd"), inputs=None, outputs=None)
+        btn_open_folder.click(fn=lambda: open_folder(os.path.join(base_dir, "layer_divider_outputs", "psd")), inputs=None, outputs=None)
 
         return [(tab, "Layer Divider", "layer_divider")]
 
