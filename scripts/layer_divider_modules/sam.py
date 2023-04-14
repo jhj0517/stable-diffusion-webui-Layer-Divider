@@ -11,7 +11,9 @@ from modules import safe
 class SamInference:
     def __init__(self):
         self.model = None
-        self.model_path = os.path.join(sam_model_path, "sam_vit_h_4b8939.pth")
+        self.available_models = list(AVAILABLE_MODELS.keys())
+        self.model_type = DEFAULT_MODEL_TYPE
+        self.model_path = os.path.join(sam_model_path, AVAILABLE_MODELS[DEFAULT_MODEL_TYPE][0])
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.mask_generator = None
 
@@ -26,14 +28,15 @@ class SamInference:
         }
 
     def set_mask_generator(self):
-        if not is_sam_exist():
-            print("\nLayer Divider Extension : No SAM model found, downloading ViT-H SAM model...")
-            download_sam_model_url()
+        if not is_sam_exist(self.model_type):
+            print(f"\nLayer Divider Extension : No SAM model found, downloading {self.model_type} model...")
+            download_sam_model_url(self.model_type)
         print("\nLayer Divider Extension : applying configs to model..")
 
         try:
             torch.load = safe.unsafe_torch_load
-            self.model = sam_model_registry["default"](checkpoint=self.model_path)
+            self.model_path = os.path.join(sam_model_path, AVAILABLE_MODELS[self.model_type][0])
+            self.model = sam_model_registry[self.model_type](checkpoint=self.model_path)
             self.model.to(device=self.device)
             torch.load = safe.load
         except Exception as e:
@@ -53,7 +56,7 @@ class SamInference:
     def generate_mask(self, image):
         return [self.mask_generator.generate(image)]
 
-    def generate_mask_app(self, image, *params):
+    def generate_mask_app(self, image, model_type, *params):
         tunable_params = {
             'points_per_side': int(params[0]),
             'pred_iou_thresh': float(params[1]),
@@ -63,7 +66,8 @@ class SamInference:
             'min_mask_region_area': int(params[5]),
         }
 
-        if self.model is None or self.mask_generator is None or self.tunable_params != tunable_params:
+        if self.model is None or self.mask_generator is None or self.model_type != model_type or self.tunable_params != tunable_params:
+            self.model_type = model_type
             self.tunable_params = tunable_params
             self.set_mask_generator()
 

@@ -3,6 +3,7 @@ install_sam()
 from scripts.layer_divider_modules import sam
 from scripts.layer_divider_modules.ui_utils import *
 from scripts.layer_divider_modules.html_constants import *
+from scripts.layer_divider_modules.model_downloader import DEFAULT_MODEL_TYPE
 
 import gradio as gr
 import os
@@ -19,6 +20,7 @@ def add_tab():
                 img_input = gr.Image(label="Input image here")
             with gr.Column(scale=5):
                 # Tunable Params
+                dd_models = gr.Dropdown(label="Model", value=DEFAULT_MODEL_TYPE, choices=sam_inf.available_models)
                 nb_points_per_side = gr.Number(label="points_per_side", value=32)
                 sld_pred_iou_thresh = gr.Slider(label="pred_iou_thresh", value=0.88, minimum=0, maximum=1)
                 sld_stability_score_thresh = gr.Slider(label="stability_score_thresh", value=0.95, minimum=0,
@@ -36,7 +38,7 @@ def add_tab():
 
         params = [nb_points_per_side, sld_pred_iou_thresh, sld_stability_score_thresh, nb_crop_n_layers,
                   nb_crop_n_points_downscale_factor, nb_min_mask_region_area]
-        btn_generate.click(fn=sam_inf.generate_mask_app, inputs=[img_input] + params, outputs=gallery_output)
+        btn_generate.click(fn=sam_inf.generate_mask_app, inputs=[img_input, dd_models] + params, outputs=gallery_output)
         btn_open_folder.click(fn=lambda: open_folder(os.path.join(base_dir, "layer_divider_outputs", "psd")), inputs=None, outputs=None)
 
         return [(tab, "Layer Divider", "layer_divider")]

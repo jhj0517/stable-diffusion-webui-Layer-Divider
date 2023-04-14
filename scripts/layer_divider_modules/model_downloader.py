@@ -8,10 +8,12 @@ from modules import shared
 
 sam_model_path = os.path.join(models_path, "sam")
 
+DEFAULT_MODEL_TYPE = "vit_h"
+
 AVAILABLE_MODELS = {
-    "ViT-H SAM model": ["sam_vit_h_4b8939.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"],
-    "ViT-L SAM model": ["sam_vit_l_0b3195.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth"],
-    "ViT-B SAM model": ["sam_vit_b_01ec64.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth"],
+    "vit_h": ["sam_vit_h_4b8939.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"],
+    "vit_l": ["sam_vit_l_0b3195.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth"],
+    "vit_b": ["sam_vit_b_01ec64.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth"],
 }
 
 
@@ -42,14 +44,15 @@ def list_models(model_path):
     return models
 
 
-def download_sam_model_url():
+def download_sam_model_url(model_type):
     shared.state.textinfo = "Downloading SAM model...."
-    load_file_from_url(AVAILABLE_MODELS["ViT-H SAM model"][1], sam_model_path)
+    load_file_from_url(AVAILABLE_MODELS[model_type][1], sam_model_path)
     shared.state.textinfo = ""
 
 
-def is_sam_exist():
-    if len(list_models(sam_model_path)) == 0:
+def is_sam_exist(model_type):
+    model_path = os.path.join(sam_model_path, AVAILABLE_MODELS[model_type][0])
+    if not os.path.exists(model_path):
         return False
     else:
         return True
