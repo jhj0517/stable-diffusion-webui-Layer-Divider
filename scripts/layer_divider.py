@@ -33,13 +33,17 @@ def add_tab():
         with gr.Row():
             btn_generate = gr.Button("GENERATE", variant="primary")
         with gr.Row():
-            gallery_output = gr.Gallery(label="Output will be shown here", show_label=True).style(grid=5, height="auto")
-            btn_open_folder = gr.Button("📁\n(PSD)").style(full_width=False)
+            gallery_output = gr.Gallery(label="Output images will be shown here").style(grid=5, height="auto")
+            with gr.Column():
+                output_file = gr.outputs.File(label="Generated psd file")
+                btn_open_folder = gr.Button("📁\nOpen PSD folder")
 
         params = [nb_points_per_side, sld_pred_iou_thresh, sld_stability_score_thresh, nb_crop_n_layers,
                   nb_crop_n_points_downscale_factor, nb_min_mask_region_area]
-        btn_generate.click(fn=sam_inf.generate_mask_app, inputs=[img_input, dd_models] + params, outputs=gallery_output)
-        btn_open_folder.click(fn=lambda: open_folder(os.path.join(base_dir, "layer_divider_outputs", "psd")), inputs=None, outputs=None)
+        btn_generate.click(fn=sam_inf.generate_mask_app,
+                           inputs=[img_input, dd_models] + params, outputs=[gallery_output, output_file])
+        btn_open_folder.click(fn=lambda: open_folder(os.path.join(base_dir, "layer_divider_outputs", "psd")),
+                              inputs=None, outputs=None)
 
         return [(tab, "Layer Divider", "layer_divider")]
 
