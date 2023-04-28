@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to improve the extension
 title: ''
-labels: bug, enhancement
+labels: bug
 assignees: ''
 
 ---
