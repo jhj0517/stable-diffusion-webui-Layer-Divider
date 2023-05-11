@@ -1,9 +1,9 @@
-from segment_anything import sam_model_registry, SamAutomaticMaskGenerator, SamPredictor
-import os
+from segment_anything import sam_model_registry, SamAutomaticMaskGenerator
 import torch
 
 from scripts.layer_divider_modules.mask_utils import *
 from scripts.layer_divider_modules.model_downloader import *
+from scripts.layer_divider_modules.installation import base_dir
 
 from modules import safe
 
@@ -72,7 +72,11 @@ class SamInference:
             self.set_mask_generator()
 
         masks = self.mask_generator.generate(image)
-        save_psd_with_masks(image, masks)
+
+        timestamp = datetime.now().strftime("%m%d%H%M%S")
+        output_path = os.path.join(base_dir, "layer_divider_outputs", "psd", f"result-{timestamp}.psd")
+
+        save_psd_with_masks(image, masks, output_path)
         combined_image = create_mask_combined_images(image, masks)
         gallery = create_mask_gallery(image, masks)
-        return [combined_image] + gallery
+        return [combined_image] + gallery, output_path

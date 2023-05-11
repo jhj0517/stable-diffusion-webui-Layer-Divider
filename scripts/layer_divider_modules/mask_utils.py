@@ -81,24 +81,21 @@ def insert_psd_layer(psd, image_data, layer_name, blending_mode):
     return psd
 
 
-def save_psd(input_image_data, layer_data, layer_names, blending_modes):
+def save_psd(input_image_data, layer_data, layer_names, blending_modes, output_path):
     psd_file = pytoshop.core.PsdFile(num_channels=3, height=input_image_data.shape[0], width=input_image_data.shape[1])
     psd_file.layer_and_mask_info.layer_info.layer_records.clear()
 
     for index, layer in enumerate(layer_data):
         psd_file = insert_psd_layer(psd_file, layer, layer_names[index], blending_modes[index])
 
-    timestamp = datetime.now().strftime("%m%d%H%M%S")
-    output_filename = os.path.join(base_dir, "layer_divider_outputs", "psd", f"result-{timestamp}.psd")
-    with open(output_filename, 'wb') as output_file:
+    with open(output_path, 'wb') as output_file:
         psd_file.write(output_file)
 
 
-def save_psd_with_masks(image, masks):
+def save_psd_with_masks(image, masks, output_path):
     original_layer = create_base_layer(image)
     mask_layers = create_mask_layers(image, masks)
     names = [f'Part {i}' for i in range(len(mask_layers))]
     modes = [BlendMode.normal] * (len(mask_layers)+1)
-    save_psd(image, original_layer+mask_layers, ['Original_Image']+names, modes)
-
+    save_psd(image, original_layer+mask_layers, ['Original_Image']+names, modes, output_path)
 
