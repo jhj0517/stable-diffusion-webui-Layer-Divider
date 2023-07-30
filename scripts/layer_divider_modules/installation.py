@@ -1,9 +1,16 @@
 import os
 from setuptools.command.build_ext import build_ext
+import distutils.sysconfig
+
+
+def get_site_packages_path():
+    sp_path = distutils.sysconfig.get_python_lib()
+    return sp_path
+
 
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sd_path = os.path.abspath(os.path.join(base_dir, '..', '..'))
-pytoshop_path = os.path.join(sd_path, 'venv', 'Lib', 'site-packages', 'pytoshop')
+pytoshop_path = os.path.join(get_site_packages_path(), 'pytoshop')
 
 
 def install_sam():
