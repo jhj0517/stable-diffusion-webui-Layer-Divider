@@ -1,5 +1,5 @@
 # Layer-Divider
-This is an implementaion of the [SAM](https://github.com/facebookresearch/segment-anything) (Segment-Anything Model) within the SD WebUI.
+This is an implementaion of the [SAM](https://github.com/facebookresearch/segment-anything) (Segment-Anything Model) within the [SD WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
 
 Divide layers in the SD WebUI and save them as PSD files.
 
