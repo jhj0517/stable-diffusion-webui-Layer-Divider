@@ -1,6 +1,6 @@
 import os
+from typing import Optional
 
-from basicsr.utils.download_util import load_file_from_url
 from modules.paths import models_path
 from modules import modelloader
 from modules.sd_models import model_hash
@@ -46,8 +46,31 @@ def list_models(model_path):
 
 def download_sam_model_url(model_type):
     shared.state.textinfo = "Downloading SAM model...."
-    load_file_from_url(AVAILABLE_MODELS[model_type][1], sam_model_path)
+    load_file_from_url(url=AVAILABLE_MODELS[model_type][1], model_dir=sam_model_path)
     shared.state.textinfo = ""
+
+def load_file_from_url(
+    url: str,
+    *,
+    model_dir: str,
+    progress: bool = True,
+    file_name: Optional[str] = None,
+) -> str:
+    from urllib.parse import urlparse
+    """Download a file from `url` into `model_dir`, using the file present if possible.
+
+    Returns the path to the downloaded file.
+    """
+    os.makedirs(model_dir, exist_ok=True)
+    if not file_name:
+        parts = urlparse(url)
+        file_name = os.path.basename(parts.path)
+    cached_file = os.path.abspath(os.path.join(model_dir, file_name))
+    if not os.path.exists(cached_file):
+        print(f'Downloading: "{url}" to {cached_file}\n')
+        from torch.hub import download_url_to_file
+        download_url_to_file(url, cached_file, progress=progress)
+    return cached_file
 
 
 def is_sam_exist(model_type):
