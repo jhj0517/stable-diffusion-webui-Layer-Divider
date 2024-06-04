@@ -18,10 +18,12 @@ def install_sam():
     from launch import is_installed, run_pip
     with open(req_file_path) as file:
         for package in file:
-            package = package.strip()
-            if not is_installed(package):
-                run_pip(
-                    f"install {package}", f"Layer Divider Extension: Installing  {package}")
+            package_name = package.strip()
+            if "==" in package_name:
+                package_name, version = package_name.split("==")
+
+            if not is_installed(package_name):
+                run_pip(f"install {package}", f"Layer Divider Extension: Installing  {package}")
 
     is_extension_there = any(filename.endswith(('.so', '.pyd')) for filename in os.listdir(pytoshop_path))
     if not is_extension_there:
