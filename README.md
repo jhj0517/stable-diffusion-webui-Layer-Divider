@@ -10,10 +10,27 @@ Divide layers in the SD WebUI and save them as PSD files.
 If you want a dedicated WebUI specifically for this, rather than as an extension, please visit this [repository](https://github.com/jhj0517/Layer-Divider-WebUI)
 
 # Installation
-`git clone https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider.git` to your stable-diffusion-webui extensions folder.
-
+`git clone https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider.git` to your stable-diffusion-webui extensions folder.<br>
 or alternatively, download and unzip the repository in your extensions folder!
 
+### Notice
+**Some packages are problematic to install programmatically when starting webui.** <br>
+**So you need to manually activate venv and install these packages before running webui.**
+1. Open the terminal in the WebUI and activate the venv
+```
+C:\YourPath\To_SD_WebUI>venv\Scripts\activate
+```
+Then it will display (venv) in front of the terminal like this.
+```
+(venv) C:\YourPath\To_SD_WebUI>
+```
+2. In this state, run
+```
+pip uninstall -y pytoshop
+pip uninstall -y packbits
+pip install pytoshop
+pip install packbits
+```
 
 # How to use
 Adjust the parameters and click "Generate". The output will be displayed below, and a PSD file will be saved in the `extensions\stable-diffusion-webui-layer-divider\layer_divider_outputs\psd` folder.
