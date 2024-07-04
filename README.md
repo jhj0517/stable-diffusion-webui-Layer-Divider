@@ -13,7 +13,7 @@ If you want a dedicated WebUI specifically for this, rather than as an extension
 `git clone https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider.git` to your stable-diffusion-webui extensions folder.<br>
 or alternatively, download and unzip the repository in your extensions folder!
 
-### Notice
+### Notice ( Read if you face an error during installation )
 **Some packages are problematic to install programmatically when starting webui.** <br>
 **So you need to manually activate venv and install these packages before running webui.**
 1. Open the terminal in the WebUI and activate the venv
