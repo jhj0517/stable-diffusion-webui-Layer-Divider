@@ -25,12 +25,11 @@ def install_sam():
             if not is_installed(package_name):
                 run_pip(f"install {package}", f"Layer Divider Extension: Installing  {package}")
 
-    is_extension_there = any(filename.endswith(('.so', '.pyd')) for filename in os.listdir(pytoshop_path))
-    if not is_extension_there:
-        build_packbits()
-
 
 def build_packbits():
+    # To resolve packbits bug. Instead of using this,
+    # Follow README instruction : https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider?tab=readme-ov-file#notice
+
     from setuptools import setup
     from setuptools.extension import Extension
 

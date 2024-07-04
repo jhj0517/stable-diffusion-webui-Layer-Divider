@@ -15,7 +15,7 @@ sam_inf = sam.SamInference()
 
 def add_tab():
     with gr.Blocks(css=CSS) as tab:
-        with gr.Row().style(equal_height=True):  # bug https://github.com/gradio-app/gradio/issues/3202
+        with gr.Row():  # workaround https://github.com/gradio-app/gradio/issues/3202
             with gr.Column(scale=5):
                 img_input = gr.Image(label="Input image here")
             with gr.Column(scale=5):
@@ -33,10 +33,10 @@ def add_tab():
         with gr.Row():
             btn_generate = gr.Button("GENERATE", variant="primary")
         with gr.Row():
-            gallery_output = gr.Gallery(label="Output images will be shown here").style(grid=5, height="auto")
+            gallery_output = gr.Gallery(label="Output images will be shown here")
             with gr.Column():
-                output_file = gr.outputs.File(label="Generated psd file")
-                btn_open_folder = gr.Button("📁\nOpen PSD folder")
+                output_file = gr.File(label="Generated psd file", scale=8)
+                btn_open_folder = gr.Button("📁\nOpen PSD folder", scale=2)
 
         params = [nb_points_per_side, sld_pred_iou_thresh, sld_stability_score_thresh, nb_crop_n_layers,
                   nb_crop_n_points_downscale_factor, nb_min_mask_region_area]
