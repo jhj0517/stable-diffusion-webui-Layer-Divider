@@ -17,7 +17,7 @@ class SamInference:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.mask_generator = None
 
-        # Tuable Parameters , All default values
+        # Tunable Parameters , All default values
         self.tunable_params = {
             'points_per_side': 32,
             'pred_iou_thresh': 0.88,

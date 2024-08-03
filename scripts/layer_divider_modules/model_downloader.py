@@ -6,14 +6,15 @@ from modules import modelloader
 from modules.sd_models import model_hash
 from modules import shared
 
-sam_model_path = os.path.join(models_path, "sam")
+sam_model_path = os.path.join(models_path, "sam2")
 
-DEFAULT_MODEL_TYPE = "vit_h"
+DEFAULT_MODEL_TYPE = "sam2_hiera_large"
 
 AVAILABLE_MODELS = {
-    "vit_h": ["sam_vit_h_4b8939.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"],
-    "vit_l": ["sam_vit_l_0b3195.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth"],
-    "vit_b": ["sam_vit_b_01ec64.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth"],
+    "sam2_hiera_tiny": ["sam2_hiera_tiny.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_tiny.pt"],
+    "sam2_hiera_small": ["sam2_hiera_small.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_small.pt"],
+    "sam2_hiera_base_plus": ["sam2_hiera_base_plus.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_plus.pt"],
+    "sam2_hiera_large": ["sam2_hiera_large.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_large.pt"],
 }
 
 
@@ -48,6 +49,7 @@ def download_sam_model_url(model_type):
     shared.state.textinfo = "Downloading SAM model...."
     load_file_from_url(url=AVAILABLE_MODELS[model_type][1], model_dir=sam_model_path)
     shared.state.textinfo = ""
+
 
 def load_file_from_url(
     url: str,
