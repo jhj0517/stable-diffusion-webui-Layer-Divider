@@ -13,7 +13,7 @@ class SamInference:
         self.model = None
         self.available_models = list(AVAILABLE_MODELS.keys())
         self.model_type = DEFAULT_MODEL_TYPE
-        self.model_path = os.path.join(sam_model_path, AVAILABLE_MODELS[DEFAULT_MODEL_TYPE][0])
+        self.model_path = os.path.join(SAM_MODEL_PATH, AVAILABLE_MODELS[DEFAULT_MODEL_TYPE][0])
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.mask_generator = None
 
@@ -35,7 +35,7 @@ class SamInference:
 
         try:
             torch.load = safe.unsafe_torch_load
-            self.model_path = os.path.join(sam_model_path, AVAILABLE_MODELS[self.model_type][0])
+            self.model_path = os.path.join(SAM_MODEL_PATH, AVAILABLE_MODELS[self.model_type][0])
             self.model = sam_model_registry[self.model_type](checkpoint=self.model_path)
             self.model.to(device=self.device)
             torch.load = safe.load
