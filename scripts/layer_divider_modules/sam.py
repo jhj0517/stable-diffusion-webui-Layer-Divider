@@ -1,11 +1,22 @@
-from segment_anything import sam_model_registry, SamAutomaticMaskGenerator
+from sam2.automatic_mask_generator import SAM2AutomaticMaskGenerator
+from sam2.build_sam import build_sam2
+from sam2.sam2_image_predictor import SAM2ImagePredictor
 import torch
+import os
 
 from scripts.layer_divider_modules.mask_utils import *
 from scripts.layer_divider_modules.model_downloader import *
 from scripts.layer_divider_modules.installation import base_dir
 
 from modules import safe
+# https://huggingface.co/spaces/SkalskiP/segment-anything-model-2/blob/main/utils/models.py
+CONFIG_PATH = os.path.join(base_dir, "configs")
+CONFIGS = {
+    "sam2_hiera_tiny": os.path.join(CONFIG_PATH, "sam2_hiera_t.yaml"),
+    "sam2_hiera_small": os.path.join(CONFIG_PATH, "sam2_hiera_s.yaml"),
+    "sam2_hiera_base_plus": os.path.join(CONFIG_PATH, "sam2_hiera_b+.yaml"),
+    "sam2_hiera_large": os.path.join(CONFIG_PATH, "sam2_hiera_l.yaml"),
+}
 
 
 class SamInference:
@@ -16,42 +27,43 @@ class SamInference:
         self.model_path = os.path.join(SAM_MODEL_PATH, AVAILABLE_MODELS[DEFAULT_MODEL_TYPE][0])
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.mask_generator = None
+        self.image_predictor = None
+        os.makedirs(SAM_MODEL_PATH, exist_ok=True)
 
-        # Tunable Parameters , All default values
+        # Tunable Parameters , All default values by https://github.com/facebookresearch/segment-anything-2/blob/main/notebooks/automatic_mask_generator_example.ipynb
         self.tunable_params = {
-            'points_per_side': 32,
-            'pred_iou_thresh': 0.88,
-            'stability_score_thresh': 0.95,
-            'crop_n_layers': 0,
-            'crop_n_points_downscale_factor': 1,
-            'min_mask_region_area': 0
+            "points_per_side": 64,
+            "points_per_batch": 128,
+            "pred_iou_thresh": 0.7,
+            "stability_score_thresh": 0.92,
+            "stability_score_offset": 0.7,
+            "crop_n_layers": 1,
+            "box_nms_thresh": 0.7,
+            "crop_n_points_downscale_factor": 2,
+            "min_mask_region_area": 25.0,
+            "use_m2m": True,
         }
 
-    def set_mask_generator(self):
+    def load_model(self):
+        config = CONFIGS[self.model_type]
+        model_path = os.path.join(SAM_MODEL_PATH, AVAILABLE_MODELS[self.model_type][0])
+
         if not is_sam_exist(self.model_type):
-            print(f"\nLayer Divider Extension : No SAM model found, downloading {self.model_type} model...")
+            print(f"\nLayer Divider Extension : No SAM2 model found, downloading {self.model_type} model...")
             download_sam_model_url(self.model_type)
         print("\nLayer Divider Extension : applying configs to model..")
 
         try:
             torch.load = safe.unsafe_torch_load
-            self.model_path = os.path.join(SAM_MODEL_PATH, AVAILABLE_MODELS[self.model_type][0])
-            self.model = sam_model_registry[self.model_type](checkpoint=self.model_path)
-            self.model.to(device=self.device)
+            self.model = build_sam2(config, model_path, device=self.device)
+            self.image_predictor = SAM2ImagePredictor(sam_model=self.model)
+            self.mask_generator = SAM2AutomaticMaskGenerator(
+                model=self.model,
+                **self.tunable_params
+            )
             torch.load = safe.load
         except Exception as e:
-            print(f"Layer Divider Extension : Error while Loading SAM model! {e}")
-
-        self.mask_generator = SamAutomaticMaskGenerator(
-            self.model,
-            points_per_side=self.tunable_params['points_per_side'],
-            pred_iou_thresh=self.tunable_params['pred_iou_thresh'],
-            stability_score_thresh=self.tunable_params['stability_score_thresh'],
-            crop_n_layers=self.tunable_params['crop_n_layers'],
-            crop_n_points_downscale_factor=self.tunable_params['crop_n_points_downscale_factor'],
-            min_mask_region_area=self.tunable_params['min_mask_region_area'],
-            output_mode="coco_rle",
-        )
+            print(f"Layer Divider Extension : Error while Loading SAM2 model! {e}")
 
     def generate_mask(self, image):
         return [self.mask_generator.generate(image)]
@@ -59,17 +71,22 @@ class SamInference:
     def generate_mask_app(self, image, model_type, *params):
         tunable_params = {
             'points_per_side': int(params[0]),
-            'pred_iou_thresh': float(params[1]),
-            'stability_score_thresh': float(params[2]),
-            'crop_n_layers': int(params[3]),
-            'crop_n_points_downscale_factor': int(params[4]),
-            'min_mask_region_area': int(params[5]),
+            'points_per_batch': int(params[1]),
+            'pred_iou_thresh': float(params[2]),
+            'stability_score_thresh': float(params[3]),
+            'stability_score_offset': float(params[4]),
+            'crop_n_layers': int(params[5]),
+            'box_nms_thresh': float(params[6]),
+            'crop_n_points_downscale_factor': int(params[7]),
+            'min_mask_region_area': int(params[8]),
+            'use_m2m': bool(params[9])
         }
 
         if self.model is None or self.mask_generator is None or self.model_type != model_type or self.tunable_params != tunable_params:
             self.model_type = model_type
             self.tunable_params = tunable_params
-            self.set_mask_generator()
+            print(f"self.tunable_params: {self.tunable_params}")
+            self.load_model()
 
         masks = self.mask_generator.generate(image)
 
