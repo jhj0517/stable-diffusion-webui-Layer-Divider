@@ -45,3 +45,6 @@ Adjust the parameters and click "Generate". The output will be displayed below, 
 | crops_n_layers                 | If >0, mask prediction will be run again on crops of the image. Sets the number of layers to run, where each layer has 2**i_layer number of image crops.                                                                                                                                |
 | crop_n_points_downscale_factor | The number of points-per-side sampled in layer n is scaled down by crop_n_points_downscale_factor**n.                                                                                                                                                                                 |
 | min_mask_region_area           | If >0, postprocessing will be applied to remove disconnected regions and holes in masks with area smaller than min_mask_region_area. Requires opencv.                                                                                                                                  |
+
+## Todo
+- [ ] Migrate to [SAM-2](https://github.com/facebookresearch/segment-anything-2)
