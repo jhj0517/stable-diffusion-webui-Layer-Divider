@@ -4,3 +4,4 @@ gradio_image_prompter
 opencv-python
 pycocotools
 git+https://github.com/jhj0517/forked-pytoshop.git
+packbits
