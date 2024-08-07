@@ -28,7 +28,7 @@ Then it will display (venv) in front of the terminal like this.
 ```
 pip uninstall -y pytoshop
 pip uninstall -y packbits
-pip install pytoshop
+pip install git+https://github.com/jhj0517/forked-pytoshop.git
 pip install packbits
 ```
 
