@@ -17,11 +17,12 @@ OUTPUT_FILTER_DIR = os.path.join(OUTPUT_DIR, "filter")
 TEMP_DIR = os.path.join(LAYER_DIVIDER_EXTENSION_DIR, "temp")
 TEMP_OUT_DIR = os.path.join(TEMP_DIR, "out")
 
-for dir_path in [SAM2_MODEL_DIR,
-                 SAM2_CONFIGS_DIR,
-                 OUTPUT_DIR,
-                 OUTPUT_PSD_DIR,
-                 OUTPUT_FILTER_DIR,
-                 TEMP_DIR,
-                 TEMP_OUT_DIR]:
-    os.makedirs(dir_path, exist_ok=True)
+def init_paths():
+    for dir_path in [SAM2_MODEL_DIR,
+                     SAM2_CONFIGS_DIR,
+                     OUTPUT_DIR,
+                     OUTPUT_PSD_DIR,
+                     OUTPUT_FILTER_DIR,
+                     TEMP_DIR,
+                     TEMP_OUT_DIR]:
+        os.makedirs(dir_path, exist_ok=True)
