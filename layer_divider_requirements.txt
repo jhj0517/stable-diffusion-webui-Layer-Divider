@@ -1,7 +1,10 @@
-samv2==0.0.2
 pytest
-gradio_image_prompter
 opencv-python
 pycocotools
 git+https://github.com/jhj0517/forked-pytoshop.git
 packbits
+git+https://github.com/jhj0517/gradio-image-prompter.git
+git+https://github.com/jhj0517/segment-anything-2.git
+hydra-core
+numpy==1.26.4
+wheel
