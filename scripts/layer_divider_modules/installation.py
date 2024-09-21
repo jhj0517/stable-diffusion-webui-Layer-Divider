@@ -15,15 +15,19 @@ pytoshop_path = os.path.join(get_site_packages_path(), 'pytoshop')
 
 def install_sam():
     req_file_path = os.path.join(base_dir, 'layer_divider_requirements.txt')
-    from launch import is_installed, run_pip
+    from launch import is_installed, run_pip, run
     with open(req_file_path) as file:
         for package in file:
+            if package.startswith("#"):
+                continue
+
             package_name = package.strip()
             if "==" in package_name:
                 package_name, version = package_name.split("==")
 
             if not is_installed(package_name):
-                run_pip(f"install {package}", f"Layer Divider Extension: Installing  {package}")
+                # run_pip(f"install {package}", f"Layer Divider Extension: Installing  {package}")
+                run(f"python -m pip install -U {package}", f"Layer Divider Extension: Installing  {package}")
 
 
 def build_packbits():
