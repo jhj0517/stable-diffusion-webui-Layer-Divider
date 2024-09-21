@@ -1,12 +1,11 @@
 import os
 from typing import Optional
 
-from modules.paths import models_path
 from modules import modelloader
 from modules.sd_models import model_hash
 from modules import shared
 
-SAM_MODEL_PATH = os.path.join(models_path, "sam2")
+from scripts.layer_divider_modules.paths import SAM2_MODEL_DIR
 
 DEFAULT_MODEL_TYPE = "sam2_hiera_large"
 
@@ -45,9 +44,11 @@ def list_models(model_path):
     return models
 
 
-def download_sam_model_url(model_type):
+def download_sam_model_url(model_type: str,
+                           model_dir: str = SAM2_MODEL_DIR):
     shared.state.textinfo = "Downloading SAM model...."
-    load_file_from_url(url=AVAILABLE_MODELS[model_type][1], model_dir=SAM_MODEL_PATH)
+    filename, url = AVAILABLE_MODELS[model_type]
+    load_file_from_url(url=url, model_dir=model_dir)
     shared.state.textinfo = ""
 
 
@@ -76,7 +77,7 @@ def load_file_from_url(
 
 
 def is_sam_exist(model_type):
-    model_path = os.path.join(SAM_MODEL_PATH, AVAILABLE_MODELS[model_type][0])
+    model_path = os.path.join(SAM2_MODEL_DIR, AVAILABLE_MODELS[model_type][0])
     if not os.path.exists(model_path):
         return False
     else:
