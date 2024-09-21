@@ -1,7 +1,7 @@
 import os
 from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
-
+import importlib.util
 
 def get_site_packages_path():
     sp_path = distutils.sysconfig.get_python_lib()
@@ -13,21 +13,42 @@ sd_path = os.path.abspath(os.path.join(base_dir, '..', '..'))
 pytoshop_path = os.path.join(get_site_packages_path(), 'pytoshop')
 
 
+def is_installed(package_name):
+    if importlib.util.find_spec(package_name) is not None:
+        return True
+    else:
+        return False
+
+
 def install_sam():
     req_file_path = os.path.join(base_dir, 'layer_divider_requirements.txt')
-    from launch import is_installed, run_pip, run
+    from launch import run_pip, run
+
     with open(req_file_path) as file:
         for package in file:
-            if package.startswith("#"):
+            package = package.strip()
+            name_exceptions_map = {
+                "hydra-core": "hydra",
+                "opencv-python": "cv2",
+                "git+https://github.com/jhj0517/gradio-image-prompter.git": "gradio_image_prompter",
+                "git+https://github.com/jhj0517/forked-pytoshop.git": "pytoshop",
+                "git+https://github.com/jhj0517/segment-anything-2.git": "sam2"
+            }
+
+            if package.startswith("#") or not package:
                 continue
 
-            package_name = package.strip()
-            if "==" in package_name:
-                package_name, version = package_name.split("==")
+            if package in list(name_exceptions_map.keys()):
+                import_name = name_exceptions_map[package]
+                if not is_installed(import_name):
+                    run_pip(f"install {package}", f"Layer Divider Extension: Installing {package}")
+                continue
+
+            if "==" in package:
+                package_name, version = package.split("==")
 
             if not is_installed(package_name):
-                # run_pip(f"install {package}", f"Layer Divider Extension: Installing  {package}")
-                run(f"python -m pip install -U {package}", f"Layer Divider Extension: Installing  {package}")
+                run_pip(f"install {package}", f"Layer Divider Extension: Installing  {package}")
 
 
 def build_packbits():
