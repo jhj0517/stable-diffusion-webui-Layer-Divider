@@ -92,6 +92,7 @@ def add_tab():
     filter_modes = [COLOR_FILTER, PIXELIZE_FILTER]
     image_modes = [AUTOMATIC_MODE, BOX_PROMPT_MODE]
     default_mode = BOX_PROMPT_MODE
+    _mask_hparams = sam_inf.default_hparams["mask_hparams"]
 
     with gr.Tabs() as tab:
         with gr.TabItem("Filter to Video"):
@@ -118,7 +119,7 @@ def add_tab():
                         nb_pixel_size = gr.Number(label="Pixel Size", interactive=True, minimum=1,
                                                   visible=default_filter == PIXELIZE_FILTER,
                                                   value=default_pixel_size)
-                        cb_invert_mask = gr.Checkbox(label="invert mask", value=sam_inf.default_hparams["invert_mask"])
+                        cb_invert_mask = gr.Checkbox(label="invert mask", value=_mask_hparams["invert_mask"])
                         btn_generate_preview = gr.Button("GENERATE PREVIEW")
 
             with gr.Row():
@@ -167,13 +168,13 @@ def add_tab():
                                                  choices=image_modes)
                     dd_models = gr.Dropdown(label="Model", value=DEFAULT_MODEL_TYPE,
                                             choices=sam_inf.available_models)
-                    cb_invert_mask = gr.Checkbox(label="invert mask", value=sam_inf.default_hparams["invert_mask"])
+                    cb_invert_mask = gr.Checkbox(label="invert mask", value=_mask_hparams["invert_mask"])
 
                     with gr.Accordion("Mask Parameters", open=False,
                                       visible=default_mode == AUTOMATIC_MODE) as acc_mask_hparams:
-                        mask_hparams_component = mask_generation_parameters(sam_inf.default_hparams)
+                        mask_hparams_component = mask_generation_parameters(_mask_hparams)
 
-                    cb_multimask_output = gr.Checkbox(label="multimask_output", value=sam_inf.default_hparams["multimask_output"])
+                    cb_multimask_output = gr.Checkbox(label="multimask_output", value=_mask_hparams["multimask_output"])
 
             with gr.Row():
                 btn_generate = gr.Button("GENERATE", variant="primary")
