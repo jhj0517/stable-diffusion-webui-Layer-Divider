@@ -7,7 +7,6 @@ import os
 from datetime import datetime
 import numpy as np
 import gradio as gr
-import yaml
 
 from scripts.layer_divider_modules.model_downloader import (
     AVAILABLE_MODELS, DEFAULT_MODEL_TYPE,
@@ -47,10 +46,6 @@ class SamInference:
         self.video_predictor = None
         self.video_inference_state = None
         self.video_info = None
-
-        default_hparam_config_path = os.path.join(SAM2_CONFIGS_DIR, "default_hparams.yaml")
-        with open(default_hparam_config_path, 'r') as file:
-            self.default_hparams = yaml.safe_load(file)
 
     def load_model(self,
                    model_type: Optional[str] = None,
