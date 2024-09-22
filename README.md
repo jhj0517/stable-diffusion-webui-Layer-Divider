@@ -9,6 +9,13 @@ Divide layers in the SD WebUI and save them as PSD files.
 
 If you want a dedicated WebUI specifically for this, rather than as an extension, please visit this [repository](https://github.com/jhj0517/Layer-Divider-WebUI)
 
+## About segment-anything-2
+
+If you want to try [segment-anything-2](https://github.com/facebookresearch/segment-anything-2), there's a new dedicated webui :
+- https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider
+
+The web ui supports prompt and video segmentation, I recommend using the new web ui.
+
 # Installation
 `git clone https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider.git` to your stable-diffusion-webui extensions folder.<br>
 or alternatively, download and unzip the repository in your extensions folder!
