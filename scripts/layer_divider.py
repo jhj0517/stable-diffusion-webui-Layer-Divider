@@ -94,7 +94,7 @@ def add_tab():
 
     init_paths()
 
-    with gr.Blocks():
+    with gr.Blocks() as block_tab:
         with gr.Tabs() as tab:
             with gr.TabItem("Filter to Video"):
                 with gr.Column():
@@ -197,7 +197,7 @@ def add_tab():
                                       inputs=[dd_input_modes],
                                       outputs=[img_input, img_input_prompter, acc_mask_hparams])
 
-        return [(tab, "Layer_Divider", "layer_divider")]
+    return [(block_tab, "Layer_Divider", "layer_divider")]
 
 
 def on_unload():
