@@ -1,5 +1,13 @@
-segment-anything
+# Use gradio >= 4.0.0 because of gradio_image_prompter.
+# 4.38.1 is used tracking the issue : https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/14184
+gradio==4.38.1
+git+https://github.com/jhj0517/gradio-image-prompter.git
+pytest
 opencv-python
 pycocotools
 git+https://github.com/jhj0517/forked-pytoshop.git
 packbits
+git+https://github.com/jhj0517/segment-anything-2.git
+hydra-core
+numpy==1.26.4
+wheel
