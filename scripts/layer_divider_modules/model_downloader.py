@@ -1,19 +1,19 @@
 import os
 from typing import Optional
 
-from modules.paths import models_path
 from modules import modelloader
 from modules.sd_models import model_hash
 from modules import shared
 
-sam_model_path = os.path.join(models_path, "sam")
+from scripts.layer_divider_modules.paths import SAM2_MODEL_DIR
 
-DEFAULT_MODEL_TYPE = "vit_h"
+DEFAULT_MODEL_TYPE = "sam2_hiera_large"
 
 AVAILABLE_MODELS = {
-    "vit_h": ["sam_vit_h_4b8939.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth"],
-    "vit_l": ["sam_vit_l_0b3195.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth"],
-    "vit_b": ["sam_vit_b_01ec64.pth", "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth"],
+    "sam2_hiera_tiny": ["sam2_hiera_tiny.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_tiny.pt"],
+    "sam2_hiera_small": ["sam2_hiera_small.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_small.pt"],
+    "sam2_hiera_base_plus": ["sam2_hiera_base_plus.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_plus.pt"],
+    "sam2_hiera_large": ["sam2_hiera_large.pt", "https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_large.pt"],
 }
 
 
@@ -44,10 +44,13 @@ def list_models(model_path):
     return models
 
 
-def download_sam_model_url(model_type):
+def download_sam_model_url(model_type: str,
+                           model_dir: str = SAM2_MODEL_DIR):
     shared.state.textinfo = "Downloading SAM model...."
-    load_file_from_url(url=AVAILABLE_MODELS[model_type][1], model_dir=sam_model_path)
+    filename, url = AVAILABLE_MODELS[model_type]
+    load_file_from_url(url=url, model_dir=model_dir)
     shared.state.textinfo = ""
+
 
 def load_file_from_url(
     url: str,
@@ -73,9 +76,12 @@ def load_file_from_url(
     return cached_file
 
 
-def is_sam_exist(model_type):
-    model_path = os.path.join(sam_model_path, AVAILABLE_MODELS[model_type][0])
-    if not os.path.exists(model_path):
-        return False
-    else:
-        return True
+def is_sam_exist(
+    model_type: str,
+    model_dir: Optional[str] = None
+):
+    if model_dir is None:
+        model_dir = SAM2_MODEL_DIR
+    filename, url = AVAILABLE_MODELS[model_type]
+    model_path = os.path.join(model_dir, filename)
+    return os.path.exists(model_path)

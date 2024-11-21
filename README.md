@@ -14,6 +14,12 @@ If you want to try [segment-anything-2](https://github.com/facebookresearch/segm
 
 The web ui supports prompt and video segmentation, I recommend using the new web ui.
 
+## Segment-Anything-2
+If you want to try [segment-anything-2](https://github.com/facebookresearch/segment-anything-2), there's a new dedicated webui :
+- [https://github.com/jhj0517/sam2-playground](https://github.com/jhj0517/sam2-playground) <br> 
+
+The web ui supports prompt boxes and video segmentation, I recommend using it for segmentation.
+
 # Installation
 `git clone https://github.com/jhj0517/stable-diffusion-webui-Layer-Divider.git` to your stable-diffusion-webui extensions folder.<br>
 or alternatively, download and unzip the repository in your extensions folder!
